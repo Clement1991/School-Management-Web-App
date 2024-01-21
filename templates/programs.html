@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<div class="container mt-4">
+    <h1 class="mb-4">Programs</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">All programs</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for program in programs %}
+                    <tr>
+                        <td>{{ program.name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Back</a>
+</div>
+{% endblock %}

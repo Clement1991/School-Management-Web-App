@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block main %}
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Edit Profile</h1>
+        {% if session['status'] == 'Non-teaching staff' %}
+            {% for person in staff %}
+                <form action="/staff_edit" method="post" id="editForm" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label for="photo">Photograph:</label>
+                        <input type="file" class="form-control" name="photo" id="staff_photo" accept="image/*" value="{{ person.photo }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" class="form-control" name="first_name" id="staff_first_name" value="{{ person.first_name }}" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" class="form-control" name="last_name" id="staff_last_name" value="{{ person.last_name }}" autocomplete="on">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="staff_date_of_birth">Date of birth:</label>
+                        <input type="text" class="form-control" name="date_of_birth" id="staff_date_of_birth" value="{{ person.date_of_birth }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="staff_gender">Gender:</label>
+                        <select class="form-control" name="gender" id="staff_gender">
+                            {% for sex in gender %}
+                                {% if sex == person.gender %}
+                                    <option value="{{ sex }}" selected> {{ sex }}</option>
+                                {% else %}
+                                    <option value="{{ sex }}">{{ sex }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="staff_nationality">Nationality:</label>
+                        <select class="form-control" id="staff_nationality" name="nationality">
+                            <option disabled selected>Select</option>
+                            {% for nationality in nationalities %}
+                                {% if nationality == person.nationality %}
+                                    <option value="{{ nationality }}" selected> {{ nationality }}</option>
+                                {% else %}
+                                    <option value="{{ nationality }}">{{ nationality }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="staff_email">Email:</label>
+                        <input type="email" class="form-control" name="email" id="staff_email" value="{{ person.email }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="staff_phone">Phone Number:</label>
+                        <input type="tel" class="form-control" name="phone" id="staff_phone" value="{{ person.phone }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="staff_address">Address:</label>
+                        <input type="text" class="form-control" id="staff_address" name="address" value="{{ person.address }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="changePassword">Change Password:</label>
+                        <input type="checkbox" name="changePassword" id="changePassword">
+                        <div id="passwordSection" style="display: none;">
+                            <label for="oldPassword">Old Password:</label>
+                            <input type="password" class="form-control" name="oldPassword" id="oldPassword">
+
+                            <label for="newPassword">New Password:</label>
+                            <input type="password" class="form-control" name="newPassword" id="newPassword">
+
+                            <label for="confirmPassword">Confirm Password:</label>
+                            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="{{ url_for('staff') }}" class="btn btn-primary">Back</a>
+                </form>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}

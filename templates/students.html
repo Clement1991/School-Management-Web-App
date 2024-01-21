@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Student
+{% endblock %}
+
+{% block main %}
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Profile</h1>
+
+        {% for student in students %}
+            <div class="profile-container row">
+                <div class="col-md-3">
+                    {% if student.photo %}
+                        <img src="{{ url_for('static', filename='photos/' + student.photo) }}" alt="Student Photo" class="img-fluid rounded-circle">
+                    {% else %}
+                        <p>No photo available</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-9">
+                    <div class="profile-info">
+                        <p><strong>Name:</strong> {{ student.first_name }} {{ student.last_name }}</p>
+                        <p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
+                        <p><strong>Gender:</strong> {{ student.gender }}</p>
+                        <p><strong>Nationality:</strong> {{ student.nationality }}</p>
+                        <p><strong>Email:</strong> {{ student.email }}</p>
+                        <p><strong>Phone:</strong> {{ student.phone }}</p>
+                        <p><strong>Address:</strong> {{ student.address }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="row mt-4">
+            {% for student in students %}
+                <div class="col-md-6">
+                    <!-- Edit Profile Link -->
+                    <button class="btn btn-primary"><a href="{{ url_for('edit', student_id=student.id) }}" class="text-white">Edit Profile</a></button>
+                </div>
+                <div class="col-md-6">
+                    <!-- Delete Profile Form -->
+                    <form action="/deregister" method="post">
+                        <input name="id" type="hidden" value="{{ student.id }}">
+                        <button type="submit" class="btn btn-danger">Delete Profile</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,4 @@
+pip3 install CS50
+pip3 install Flask_session
+pip3 install pycountry
+pip3 install validator-collection

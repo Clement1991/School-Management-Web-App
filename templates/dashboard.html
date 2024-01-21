@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Student
+{% endblock %}
+
+{% block main %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Welcome to My School App</h1>
+
+        {% for person in profile %}
+        <!-- Quick Links -->
+        <div class="quick-links">
+            <a href="/departments">Departments</a>
+            <a href="/programs">Programs</a>
+            <a href="/">Latest Announcements</a>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2>Upcoming Events</h2>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>Exam on 12th February 2024</li>
+                    <li>Department picnic on 20th February 2024</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2>Recent Activity</h2>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>{{ person.first_name }} {{ person.last_name }} registered on MySchool App</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Announcements -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2>Announcements</h2>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>Important announcement about Department</li>
+                    <li>Reminder: Marriage Ceremony on 30th January 2024</li>
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

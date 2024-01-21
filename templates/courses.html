@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Program Courses
+{% endblock %}
+
+{% block main %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Program Courses</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Courses</th>
+                        <th scope="col">Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                        <tr>
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.year }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Back</a>
+    </div>
+
+{% endblock %}

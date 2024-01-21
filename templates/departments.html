@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<div class="container mt-4">
+    <h1 class="mb-4">Departments</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">All Departments</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for department in departments %}
+                    <tr>
+                        <td>{{ department.name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Back</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,159 @@
+/* Set a style for the sidebar */
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #343a40; /* Dark background color */
+    padding-top: 60px; /* Adjust this value to match your header height */
+    color: #fff; /* Text color */
+}
+
+/* Style the links inside the sidebar */
+.sidebar a {
+    padding: 12px 16px; /* Increase padding for better readability */
+    text-decoration: none;
+    font-size: 18px;
+    color: #fff;
+    display: block;
+    transition: 0.3s; /* Add smooth transition effect */
+}
+
+/* Change the color of links on hover */
+.sidebar a:hover {
+    background-color: #555; /* Darker color on hover */
+}
+
+/* Style the content */
+.content {
+    margin-left: 250px; /* Same as sidebar width */
+    padding: 20px;
+    background-color: #f8f9fa; /* Light background color for content */
+}
+
+/* Style the success alert */
+.alert-success {
+    background-color: #28a745; /* Green background color */
+    color: #fff; /* Text color */
+}
+
+/* Style the danger alert */
+.alert-danger {
+    background-color: #dc3545; /* Red background color */
+    color: #fff; /* Text color */
+}
+
+/* Additional styles for the profile page */
+.container {
+    background-color: #fff; /* White background for the container */
+    padding: 20px;
+    border-radius: 10px; /* Add rounded corners to the container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+h1 {
+    color: #007bff; /* Blue color for the heading */
+    text-align: center; /* Center the main heading */
+}
+
+.row {
+    margin-bottom: 20px; /* Add some space between rows */
+}
+
+.col-md-3 {
+    text-align: center; /* Center the content in the photo column */
+}
+
+.img-fluid {
+    max-width: 100%; /* Make images responsive within their container */
+    border-radius: 50%; /* Add circular border-radius for curved edges */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the image */
+    margin-bottom: 20px; /* Add space between the image and profile information */
+}
+
+/* Style the profile information */
+.col-md-9 p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Style the Edit Profile and Delete Profile buttons */
+.btn-primary, .btn-danger {
+    width: auto; /* Auto width for the buttons */
+}
+
+/* Add space between Edit Profile and Delete Profile buttons */
+.col-md-6 {
+    margin-top: 10px;
+    text-align: center; /* Center the buttons within the column */
+}
+
+/* Style the links within buttons */
+.btn a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Change button colors on hover */
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker blue color on hover */
+}
+
+.btn-danger:hover {
+    background-color: #dc3545; /* Darker red color on hover */
+}
+
+/* Style the profile container */
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Style the profile information */
+.profile-info {
+    padding-left: 20px;
+}
+
+/* Adjust button widths */
+.btn-primary,
+.btn-danger {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Adjust button sizes */
+.btn-primary,
+.btn-danger {
+    width: fit-content; /* Adjust the width as needed */
+    margin-bottom: 10px;
+    font-size: 14px; /* Adjust the font size as needed */
+}
+
+/* Additional styling for the courses page */
+.container {
+    margin-top: 20px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+/* Adjust the color or other styles as needed */
+
+/* Additional styling for the teachers page */
+.profile-container {
+    margin-bottom: 20px;
+}
+
+.profile-info {
+    padding-left: 20px;
+}
+
+.btn-sm {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+}
+

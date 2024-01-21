@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <div class="container mt-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="mb-4">Registration Form</h1>
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+        </div>
+
+        <form action="/register" method="post" id="registerForm" enctype="multipart/form-data">
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status"><h5>Status</h5></label>
+                <select class="form-control" name="status" id="status">
+                    <option disabled selected>Select</option>
+                    {% for person in status %}
+                        <option value="{{ person }}">{{ person }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Profile Photo -->
+            <div class="form-group">
+                <label for="photo"><h5>Photograph</h5></label>
+                <input type="file" class="form-control-file" name="photo" id="photo" accept="image/*">
+            </div>
+
+            <!-- First name -->
+            <div class="form-group">
+                <label for="first_name"><h5>First Name</h5></label>
+                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="John" autocomplete="on" autofocus>
+            </div>
+
+            <!-- Last name -->
+            <div class="form-group">
+                <label for="last_name"><h5>Last Name</h5></label>
+                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Doe" autocomplete="on">
+            </div>
+
+            <!-- Date of birth -->
+            <div class="form-group">
+                <h5>Date of Birth</h5>
+                <label for="year">Year</label>
+                <input type="number" class="form-control" name="year" id="year" min="1900" max="2024" step="1">
+
+                <label for="month">Month</label>
+                <input type="number" class="form-control" name="month" id="month" min="1" max="12" step="1">
+
+                <label for="day">Day</label>
+                <input type="number" class="form-control" name="day" id="day" min="1" max="31" step="1">
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+                <label for= "gender"><h5>Gender</h5></label>
+                <select class="form-control" name="gender" id="gender">
+                    <option disabled selected>Select</option>
+                    {% for sex in gender %}
+                        <option value="{{ sex }}">{{ sex }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Nationality -->
+            <div class="form-group">
+                <label for="nationality"><h5>Nationality</h5></label>
+                <select class="form-control" id="nationality" name="nationality">
+                    <option disabled selected>Select</option>
+                    {% for nationality in nationalities %}
+                        <option value="{{ nationality }}">{{ nationality }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for= "password"><h5>Password</h5></label>
+                <input class="form-control" type="password" name="password" id="password" placeholder="Your secret password">
+            </div>
+
+            <!-- Password Confirmation-->
+            <div class="form-group">
+                <label for= "password"><h5>Confirm Password</h5></label>
+                <input class="form-control" type="password" name="confirmation" id="confirmation" placeholder="Confirm password">
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for= "email"><h5>Email</h5></label>
+                <input class="form-control" type="email" name="email" id="email" placeholder="Email" autocomplete="on">
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+                <label for="phone"><h5>Phone Number</h5></label>
+                <input class="form-control" type="tel" name="phone" id="phone">
+            </div>
+
+            <!-- Address -->
+            <div class="form-group">
+                <label for="text"><h5>Address</h5></label>
+                <input class="form-control" type="text" id="address" name="address" placeholder="Address">
+            </div>
+
+            <!-- Programs -->
+            <div class="form-group" id="programField">
+                <label for="program"><h5>Program</h5></label>
+                <select class="form-control" name="program" id="program">
+                    <option disabled selected>Select</option>
+                    {% for program in programs %}
+                        <option value="{{ program.name }}">{{ program.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- School -->
+            <div class="form-group" id="schoolField">
+                <label for="school"><h5>Previous School</h5></label>
+                <input class="form-control" type="text" name="school" id="school" placeholder="Name of previous school attended" autocomplete="on">
+            </div>
+
+            <!-- Department -->
+            <div class="form-group" id="departmentField">
+                <label for="department"><h5>Department</h5></label>
+                <select class="form-control" name="department" id="department">
+                    <option disabled selected>Select</option>
+                    {% for department in departments %}
+                        <option value="{{ department.name }}">{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <button type="reset" class="btn btn-primary mr-2">Reset</button>
+                </div>
+            </div>
+
+        </form>
+
+        <script src="{{ url_for('static', filename='app.js') }}"></script>
+    </div>
+{% endblock %}

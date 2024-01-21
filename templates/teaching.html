@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <div class="container mt-4">
+        <form action="/teaching" method="post">
+            <div class="form-group">
+                <label for="course">Courses:</label>
+                <select class="form-control" name="course" id="course" multiple size="20" required>
+                    <option disabled selected>Select</option>
+                    {% for course in courses %}
+                        <option value="{{ course.name }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+{% endblock %}
