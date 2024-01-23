@@ -22,6 +22,17 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "myapp"
 
 
+# Use the PORT environment variable if available, otherwise default to 5000
+port = int(os.environ.get("PORT", 5000))
+
+print("Starting the app. Port:", port)
+
+# Retrieve the value of the 'SECRET_KEY' environment variable
+secret_key = os.environ.get('SECRET_KEY')
+
+# Use the retrieved value
+app.config["SECRET_KEY"] = secret_key
+
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -1113,3 +1124,7 @@ def teaching():
         )
 
         return render_template("teaching.html", courses=courses, staff=profile)
+
+if __name__ == "__main__":
+    print("Running the app on port:", port)
+    app.run(port=port)
