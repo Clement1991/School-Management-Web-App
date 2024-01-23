@@ -19,13 +19,6 @@ import pycountry
 
 # Configure application
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "myapp"
-
-
-# Use the PORT environment variable if available, otherwise default to 5000
-port = int(os.environ.get("PORT", 5000))
-
-print("Starting the app. Port:", port)
 
 # Retrieve the value of the 'SECRET_KEY' environment variable
 secret_key = os.environ.get('SECRET_KEY')
@@ -1126,5 +1119,4 @@ def teaching():
         return render_template("teaching.html", courses=courses, staff=profile)
 
 if __name__ == "__main__":
-    print("Running the app on port:", port)
-    app.run(port=port)
+    app.run(debug=True)
