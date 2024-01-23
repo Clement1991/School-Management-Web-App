@@ -43,6 +43,7 @@ STATUS = ["Student", "Teaching staff", "Non-teaching staff"]
 
 nationalities = [country.name for country in pycountry.countries]
 
+
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached"""
@@ -212,6 +213,7 @@ def departments():
     departments = db.execute("SELECT * FROM departments")
     return render_template("departments.html", departments=departments)
 
+
 @app.route("/deregister", methods=["POST"])
 def deregister():
     user_id = session["user_id"]
@@ -252,7 +254,9 @@ def login():
                 if len(rows) != 1:
                     flash("Account does not exist! Please enter a new email.", "danger")
                 elif not check_password_hash(rows[0]["password"], password):
-                    flash("Invalid password! Please enter a correct password.", "danger")
+                    flash(
+                        "Invalid password! Please enter a correct password.", "danger"
+                    )
                 else:
                     db.execute(
                         "INSERT INTO student_logs (type, old_email, new_email, old_password, new_password) VALUES (?, ?, ?, ?, ?)",
@@ -275,12 +279,18 @@ def login():
                     return redirect("/")
 
             elif status == "Teaching staff":
-                rows = db.execute("SELECT * FROM staff WHERE email = ? AND status = ?", email, "Teaching staff")
+                rows = db.execute(
+                    "SELECT * FROM staff WHERE email = ? AND status = ?",
+                    email,
+                    "Teaching staff",
+                )
 
                 if len(rows) != 1:
                     flash("Account does not exist! Please enter a new email.", "danger")
                 elif not check_password_hash(rows[0]["password"], password):
-                    flash("Invalid password! Please enter a correct password.", "danger")
+                    flash(
+                        "Invalid password! Please enter a correct password.", "danger"
+                    )
                 else:
                     db.execute(
                         "INSERT INTO staff_logs (type, old_email, new_email, old_password, new_password) VALUES (?, ?, ?, ?, ?)",
@@ -303,7 +313,11 @@ def login():
                     return redirect("/")
 
             else:
-                rows = db.execute("SELECT * FROM staff WHERE email = ? AND status = ?", email, "Non-teaching staff")
+                rows = db.execute(
+                    "SELECT * FROM staff WHERE email = ? AND status = ?",
+                    email,
+                    "Non-teaching staff",
+                )
 
                 # If email already exists in the database
                 if len(rows) != 1:
@@ -311,7 +325,9 @@ def login():
 
                 # Verify password from database
                 elif not check_password_hash(rows[0]["password"], password):
-                    flash("Invalid password! Please enter a correct password.", "danger")
+                    flash(
+                        "Invalid password! Please enter a correct password.", "danger"
+                    )
                 else:
                     db.execute(
                         "INSERT INTO staff_logs (type, old_email, new_email, old_password, new_password) VALUES (?, ?, ?, ?, ?)",
@@ -372,9 +388,6 @@ def register():
         phone = request.form.get("phone")
         address = request.form.get("address")
 
-        # GET PHOTO: Initialize photo name and photo hashes to None
-        photoname = None
-
         # Request for photo
         if "photo" in request.files:
             photo = request.files["photo"]
@@ -382,14 +395,14 @@ def register():
             # If photo is present or uploaded
             if photo.filename != "":
                 # Check if the file has a valid extension
-                allowed_extensions = {"png", "jpg", "jpeg", "gif"}
+
                 photo_extension = (
                     secure_filename(photo.filename).rsplit(".", 1)[1].lower()
                     if "." in photo.filename
                     else ""
                 )
 
-                if photo_extension not in allowed_extensions:
+                if photo_extension not in app.config["ALLOWED_EXTENSIONS"]:
                     flash(
                         "Invalid file extension. Allowed extensions: 'png', 'jpg', 'jpeg', 'gif'.",
                         category="danger",
@@ -456,8 +469,9 @@ def register():
                 else:
                     # Check if student email already exists in the database
                     rows = db.execute("SELECT * FROM students WHERE email = ?", email)
+                    other = db.execute("SELECT * FROM staff WHERE email = ?", email)
 
-                    if len(rows) > 0:
+                    if len(rows) > 0 or len(other) > 0:
                         flash(
                             "Email already exists! Enter a different email address.",
                             "danger",
@@ -472,8 +486,9 @@ def register():
                         hashed_password = generate_password_hash(password)
 
                         db.execute(
-                            "INSERT INTO students (photo, first_name, last_name, date_of_birth, gender, nationality, previous_school, password, email, phone, address, program_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                            photoname,
+                            "INSERT INTO students (photo, photo_hash, first_name, last_name, date_of_birth, gender, nationality, previous_school, password, email, phone, address, program_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            photo_name,
+                            photo_hash,
                             first_name,
                             last_name,
                             dob,
@@ -492,8 +507,9 @@ def register():
             else:
                 # Check if staff email already exists in the database
                 rows = db.execute("SELECT * FROM staff WHERE email = ?", email)
+                other = db.execute("SELECT * FROM students WHERE email = ?", email)
 
-                if len(rows) > 0:
+                if len(rows) > 0 or len(other) > 0:
                     flash(
                         "Email already exists! Enter a different email address!!!",
                         "danger",
@@ -511,8 +527,9 @@ def register():
                         hashed_password = generate_password_hash(password)
 
                         db.execute(
-                            "INSERT INTO staff (photo, first_name, last_name, date_of_birth, gender, nationality, password, email, phone, address, department_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                            photoname,
+                            "INSERT INTO staff (photo, photo_hash, first_name, last_name, date_of_birth, gender, nationality, password, email, phone, address, department_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            photo_name,
+                            photo_hash,
                             first_name,
                             last_name,
                             dob,
@@ -547,6 +564,7 @@ def register():
             programs=programs,
             departments=departments,
         )
+
 
 @app.route("/staff_edit", methods=["GET", "POST"])
 @login_required
@@ -601,25 +619,20 @@ def staff_edit():
             # Forget any user_id
             session.clear()
 
-        # Initialize photo_name and photo_hash to None
-        photo_name = None
-        photo_hash = None
-
         # Request for a new photo
         if "photo" in request.files:
             photo = request.files["photo"]
 
             # Check if a new photo is provided
             if photo.filename != "":
-                # Check if the file has a valid extension
-                allowed_extensions = {"png", "jpg", "jpeg", "gif"}
+
                 photo_extension = (
                     secure_filename(photo.filename).rsplit(".", 1)[1].lower()
                     if "." in photo.filename
                     else ""
                 )
 
-                if photo_extension not in allowed_extensions:
+                if photo_extension not in app.config["ALLOWED_EXTENSIONS"]:
                     flash(
                         "Invalid file extension. Allowed extensions: 'png', 'jpg', 'jpeg', 'gif'."
                     )
@@ -644,10 +657,8 @@ def staff_edit():
 
                     # Update the database with the current photo and photo_hash
                     db.execute(
-                        "UPDATE staff SET photo = ? WHERE id = ?", photo_name, user_id
-                    )
-                    db.execute(
-                        "UPDATE staff SET photo_hash = ? WHERE id = ?",
+                        "UPDATE staff SET photo = ?, photo_hash = ? WHERE id = ?",
+                        photo_name,
                         photo_hash,
                         user_id,
                     )
@@ -694,10 +705,10 @@ def staff_edit():
         )  # Redirect to the dashboard or another appropriate route
 
     else:
-        nationalities = [country.name for country in pycountry.countries]
         return render_template(
             "staff_edit.html", staff=staff, gender=GENDER, nationalities=nationalities
         )
+
 
 @app.route("/edit", methods=["GET", "POST"])
 @login_required
@@ -832,28 +843,23 @@ def edit():
             # Forget any user_id
             session.clear()
 
-        # Retrieve the current photo filename and hash from the database
-        current_photo = student[0]["photo"]
-        current_photo_hash = student[0]["photo_hash"]
-
-        # Initialize photo_name and photo_hash to None
-        photo_name = None
-        #photo_hash = None
-
         # Request for a new photo
         if "photo" in request.files:
             photo = request.files["photo"]
 
+            # Retrieve the current photo filename and hash from the database
+            current_photo = student[0]["photo"]
+            current_photo_hash = student[0]["photo_hash"]
+
             # Check if a new photo is provided
             if photo.filename != "":
                 # Check if the file has a valid extension
-                allowed_extensions = {"png", "jpg", "jpeg", "gif"}
                 photo_extension = (
                     secure_filename(photo.filename).rsplit(".", 1)[1].lower()
                     if "." in photo.filename
                     else ""
                 )
-                if photo_extension not in allowed_extensions:
+                if photo_extension not in app.config["ALLOWED_EXTENSIONS"]:
                     flash(
                         "Invalid file extension. Allowed extensions: 'png', 'jpg', 'jpeg', 'gif'.",
                         "danger",
@@ -875,8 +881,9 @@ def edit():
 
                     # Update the database with the current photo
                     db.execute(
-                        "UPDATE students SET photo = ? WHERE id = ?",
+                        "UPDATE students SET photo = ?, photo_hash = ? WHERE id = ?",
                         photo_name,
+                        photo_hash,
                         user_id,
                     )
 
@@ -1001,29 +1008,24 @@ def teachers_edit():
             # Forget any user_id
             session.clear()
 
-        # Retrieve the current photo filename and hash from the database
-        current_photo = teachers[0]["photo"]
-        current_photo_hash = teachers[0]["photo_hash"]
-
-        # Initialize photo_name and photo_hash to None
-        photo_name = None
-        photo_hash = None
-
         # Request for a new photo
         if "photo" in request.files:
             photo = request.files["photo"]
 
+            # Retrieve the current photo filename and hash from the database
+            current_photo = teachers[0]["photo"]
+            current_photo_hash = teachers[0]["photo_hash"]
+
             # Check if a new photo has been uploaded
             if photo.filename != "":
                 # Check if the file has a valid extension
-                allowed_extensions = {"png", "jpg", "jpeg", "gif"}
                 photo_extension = (
                     secure_filename(photo.filename).rsplit(".", 1)[1].lower()
                     if "." in photo.filename
                     else ""
                 )
 
-                if photo_extension not in allowed_extensions:
+                if photo_extension not in app.config["ALLOWED_EXTENSIONS"]:
                     flash(
                         "Invalid file extension. Allowed extensions: 'png', 'jpg', 'jpeg', 'gif'.",
                         category="danger",
@@ -1111,4 +1113,3 @@ def teaching():
         )
 
         return render_template("teaching.html", courses=courses, staff=profile)
-
