@@ -2,7 +2,9 @@
 
 By Clement Gyasi Siaw
 
-Video overview: <https://www.youtube.com/watch?v=SAJjHrtwWbQ>
+Video overview: [Watch Video Overview](https://www.youtube.com/watch?v=SAJjHrtwWbQ)  
+Web app: [School Management Web Application](https://my-school-web-app-f0284fad144a.herokuapp.com)
+
 
 ## Scope
 
